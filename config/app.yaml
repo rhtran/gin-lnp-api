@@ -1,0 +1,9 @@
+# The Data Source Name for the database
+# Make sure you override this in production with the environment variable: LNP_DSN
+cassandra_host: "m360-cass-dev.lb.ytel.com:9042"
+cassandra_username: "dialer"
+cassandra_password: '\0b4s2ZRrVE?WZ_p'
+cassandra_keyspace: "lnp"
+cassandra_data_center: "datacenter1"
+cassandra_timeout: 5
+cassandra_proto_version: 4

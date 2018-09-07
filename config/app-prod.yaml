@@ -1,0 +1,10 @@
+# The Data Source Name for the database
+# Make sure you override this in production with the environment variable: RESTFUL_DSN
+
+cassandra_host: G-B4IhqaZCriPbG5VYIwkuccdMF-0aiUSBuiyxzQtjb9AjtyOEFs
+cassandra_keyspace: C7b43AvL-6fVm1-xj7ls6Z1DQQ==
+cassandra_username: XttHWPJYWiLd7Hj3-2SBkjGHSA==
+cassandra_password: QQtMKIfwZ2vOnDAKLUNKbnZIvvu2Iib8e0R6IXxWdb0=
+cassandra_data_center: "la1-config"
+cassandra_timeout: 5
+cassandra_proto_version: 4
