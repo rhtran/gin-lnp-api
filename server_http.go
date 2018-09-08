@@ -8,6 +8,12 @@ import (
 	"gin-lnp-api/app"
 	"gin-lnp-api/api/lerg"
 	"gin-lnp-api/api/lrn"
+	"net/http"
+	"log"
+	"os"
+	"os/signal"
+	"time"
+	"context"
 )
 
 //type HttpServer struct {
@@ -57,5 +63,29 @@ func main() {
 	lergRouter.LergRegister(v1.Group("/lergs"))
 	lrnRouter.LrnRegister(v1.Group("/dids"))
 
-	r.Run()
+	srv := &http.Server{
+		Addr:    app.Config.HttpServerPort,
+		Handler: r,
+	}
+
+	go func() {
+		// service connections
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("http listen: %s\n", err)
+		}
+	}()
+
+	// Wait for interrupt signal to gracefully shutdown the server with
+	// a timeout of 5 seconds.
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("Shutdown Http Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Http Server Shutdown:", err)
+	}
+	log.Println("Http Server exiting")
 }

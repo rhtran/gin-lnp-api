@@ -11,7 +11,7 @@ It has these top-level messages:
 	Request
 	Response
 */
-package grpc
+package grhello
 
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"

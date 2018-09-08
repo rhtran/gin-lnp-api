@@ -1,9 +1,8 @@
-package grpc
+package grhello
 
 import "golang.org/x/net/context"
 
 type GrpcHelloService struct {
-
 }
 
 func (s *GrpcHelloService) Greet(ctx context.Context, request *Request) (*Response, error) {

@@ -18,7 +18,8 @@ type appConfig struct {
 	ErrorFile string `mapstructure:"error_file"`
 	Hostname  string `mapstructure:"hostname"`
 	// the server port. Defaults to 8080
-	ServerPort int `mapstructure:"server_port"`
+	HttpServerPort string `mapstructure:"http_server_port"`
+	GrpcServerPort string `mapstructure:"grpc_server_port"`
 	// the data source name (DSN) for connecting to the database. required.
 	CassHost        string `mapstructure:"cassandra_host"`
 	ClusterUsername string `mapstructure:"cassandra_username"`

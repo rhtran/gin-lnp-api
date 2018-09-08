@@ -24,8 +24,9 @@ Build or loy out the template that ready to implement REST API & gRPC services.
 
 API Endpoints:
 
-| Path                            | Method | Description                        | Response          |Done|
-|---------------------------------|--------|------------------------------------|-------------------|----|
-| /v1/lnp/dids/{did}              | GET    | get phone by phone #               | LRN json object   | Y  |
-| /v1/lnp/dids?did_list=#,#,#     | GET    | get phones by list of phone #      | LRN list          | N  |
-| /v1/lnp/ocns/{ocn}              | GET    | get ocn info by ocn code           | OCN json object   |    |
+| Path                               | Method | Description                        | Response          |Done|
+|------------------------------------|--------|------------------------------------|-------------------|----|
+| /v1/lnp/dids/:did                  | GET    | get phone by phone #               | LRN json object   | Y  |
+| /v1/lnp/dids?did_list=#,#,#        | GET    | get phones by list of phone #      | LRN list          | Y  |
+| /v1/lnp/ocns/:ocn                  | GET    | get ocn info by ocn code           | OCN json object   | Y  |
+| /v1/lnp/lergs/:npa/:nxx/:block_id  | GET    | get lerg info from lerg database   | LERG json object  | Y  |
