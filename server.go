@@ -1,11 +1,14 @@
 package main
 
 import (
-	"gin-lnp-api/dbase"
-	"fmt"
-	"gin-lnp-api/app"
 	"gin-lnp-api/api/ocn"
-	"log"
+	"gin-lnp-api/api/lerg"
+	"gin-lnp-api/api/lrn"
+	"github.com/gin-gonic/gin"
+		"fmt"
+	"gin-lnp-api/dbase"
+	"gin-lnp-api/app"
+	"gin-lnp-api/ds"
 )
 
 func main() {
@@ -14,29 +17,32 @@ func main() {
 		panic(fmt.Errorf("invalid application configuration: %s", err))
 	}
 
-	// load error messages
-	//if err := errors.LoadMessages(app.Config.ErrorFile); err != nil {
-	//	panic(fmt.Errorf("failed to read the error message file: %s", err))
-	//}
-
-	// create the logger
-	//logger := logrus.New()
 	db := dbase.ConnectDatabase()
 	defer db.Close()
 
+	// OCN
 	ocnRepository := ocn.NewOcnRepository(db)
 	ocnService := ocn.NewOcnService(ocnRepository)
+	ocnRouter := ocn.NewOcnRouter(ocnService)
 
-	ocn, err := ocnService.GetByOcn("348H")
+	//LERG
+	lergRepository := lerg.NewLergRepository(db)
+	lergService := lerg.NewLergService(lergRepository)
+	lergRouter := lerg.NewLergRouter(lergService)
 
-	if err != nil {
-		log.Fatalf("Error retrieving ocn: %v", err)
-	}
-
-	fmt.Printf("%s: %s, %s, %s", ocn.Ocn, ocn.Company, ocn.CommonName, ocn.Type)
-
+	// LRN
+	lrnRepository := lrn.NewLrnRepository(db)
+	lrnService := lrn.NewLrnService(lergRepository, lrnRepository)
+	lrnRouter := lrn.NewLrnRouter(lrnService)
 
 
+	r := gin.Default()
+	v1 := r.Group("/v1/lnp")
 
-	//r.Run() // listen and server on 0.0.0.0:8080
+	ocnRouter.OcnRegister(v1.Group("/ocns"))
+	lergRouter.LergRegister(v1.Group("/lergs"))
+	lrnRouter.LrnRegister(v1.Group("/dids"))
+
+	httpServer := ds.NewHttpServer(r)
+	httpServer.Start()
 }

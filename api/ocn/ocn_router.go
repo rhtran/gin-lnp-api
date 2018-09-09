@@ -28,5 +28,5 @@ func (ocnRouter *OcnRouter) OcnRetrieve(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"": ocn})
+	c.JSON(http.StatusOK, ocn)
 }

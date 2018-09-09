@@ -29,5 +29,5 @@ func (lergRouter *LergRouter) LergRetrieve(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"": response})
+	c.JSON(http.StatusOK, response)
 }

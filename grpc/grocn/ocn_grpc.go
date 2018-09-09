@@ -15,7 +15,7 @@ func NewGrpcOcnService(ocnService *ocn.OcnService) *GrpcOcnService {
 	}
 }
 
-func (s *GrpcOcnService) Greet(ctx context.Context, ocnReq *OcnReq) (*OcnRes, error) {
+func (s *GrpcOcnService) FindByOcn(ctx context.Context, ocnReq *OcnReq) (*OcnRes, error) {
 	ocn, err := s.ocnService.GetByOcn(ocnReq.GetOcn())
 	if err != nil {
 		return nil, err
@@ -29,3 +29,10 @@ func (s *GrpcOcnService) Greet(ctx context.Context, ocnReq *OcnReq) (*OcnRes, er
 		CommonName: ocn.CommonName,
 	}, nil
 }
+
+//func (s *GrpcOcnService) FindByOcns(ctx context.Context, ocnReq *OcnReq) (*OcnRes, error) {
+//	ocn, err := s.ocnService.GetByOcn(ocnReq.GetOcn())
+//	if err != nil {
+//		return nil, err
+//	}
+//}

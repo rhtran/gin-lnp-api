@@ -15,7 +15,7 @@ func NewGrpcLrnService(lrnService *lrn.LrnService) *GrpcLrnService {
 	}
 }
 
-func (s *GrpcLrnService) RetrieveByDid(ctx context.Context, didReq *DidReq) (*LrnRes, error) {
+func (s *GrpcLrnService) FindByDid(ctx context.Context, didReq *DidReq) (*LrnRes, error) {
 	lrn, err := s.lrnService.GetByDid(didReq.Did)
 	if err != nil {
 		return nil, err

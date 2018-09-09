@@ -31,7 +31,7 @@ func (lrnRouter *LrnRouter) LrnRetrieve(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"": lrn})
+	c.JSON(http.StatusOK, lrn)
 }
 
 func (lrnRouter *LrnRouter) LrnsRetrieve(c *gin.Context) {
@@ -45,5 +45,5 @@ func (lrnRouter *LrnRouter) LrnsRetrieve(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"": responses})
+	c.JSON(http.StatusOK, responses)
 }
