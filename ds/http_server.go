@@ -29,6 +29,8 @@ func (httpSrv *HttpServer) Start() {
 
 	go func() {
 		// service connections
+		log.Println("Start Http Server ...")
+
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("http listen: %s\n", err)
 		}

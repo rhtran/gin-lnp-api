@@ -9,7 +9,16 @@ import (
 	"gin-lnp-api/dbase"
 	"gin-lnp-api/app"
 	"gin-lnp-api/ds"
+				"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
+	"log"
+	"net"
 )
+
+var (
+	g errgroup.Group
+)
+
 
 func main() {
 	// load application configurations
@@ -35,7 +44,17 @@ func main() {
 	lrnService := lrn.NewLrnService(lergRepository, lrnRepository)
 	lrnRouter := lrn.NewLrnRouter(lrnService)
 
+	// GRPC Server
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
 
+	grpcServer := ds.NewGrpcServer(s, lis)
+	go grpcServer.Start()
+
+	// HTTP Server
 	r := gin.Default()
 	v1 := r.Group("/v1/lnp")
 
@@ -45,4 +64,5 @@ func main() {
 
 	httpServer := ds.NewHttpServer(r)
 	httpServer.Start()
+
 }
