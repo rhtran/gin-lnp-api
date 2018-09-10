@@ -6,10 +6,10 @@ import (
 )
 
 type OcnRouter struct {
-	ocnService *OcnService
+	ocnService ocnService
 }
 
-func NewOcnRouter(ocnService *OcnService) *OcnRouter {
+func NewOcnRouter(ocnService ocnService) *OcnRouter {
 	return &OcnRouter{
 		ocnService: ocnService,
 	}

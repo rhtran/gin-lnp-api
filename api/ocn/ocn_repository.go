@@ -5,6 +5,10 @@ import (
 	"fmt"
 )
 
+type ocnRepository interface {
+	FindByOcn(ocn string) (*Ocn, error)
+}
+
 // OcnRepository retrieves ocn from the database
 type OcnRepository struct {
 	session *gocql.Session

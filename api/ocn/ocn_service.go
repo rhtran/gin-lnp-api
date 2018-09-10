@@ -1,11 +1,15 @@
 package ocn
 
+type ocnService interface {
+	GetByOcn(ocn string) (*Ocn, error)
+}
+
 type OcnService struct {
-	repository *OcnRepository
+	repository ocnRepository
 }
 
 // NewArtistService creates a new ArtistService with the given artist DAO.
-func NewOcnService(repository *OcnRepository) *OcnService {
+func NewOcnService(repository ocnRepository) *OcnService {
 	return &OcnService{repository: repository}
 }
 
