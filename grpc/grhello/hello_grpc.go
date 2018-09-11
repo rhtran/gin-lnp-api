@@ -6,6 +6,7 @@ import (
 
 type GrpcHelloService struct {
 }
+
 func NewGrpcHelloService() *GrpcHelloService {
 	return &GrpcHelloService {
 	}
