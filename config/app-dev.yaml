@@ -1,6 +1,12 @@
 # The Data Source Name for the database
-# Make sure you override this in production with the environment variable: RESTFUL_DSN
-cassandra_host: "L-_52bbNpJOS3CwsZlveF4XgvNCWHBZExi7q7pKksxjfxT1Ywko7ol88H-dXZg=="
-cassandra_username: "sT6xRTEePdj42G-t3rzeMe2-x-WYYA=="
-cassandra_password: "maNgv4j-wTB59RU6Z35qoPSo4sZPyrY9oT-vSoleMu8="
-cassandra_keyspace: "u_3N5wCqYWdlHRJQ3AFJm86TEA=="
+# Make sure you override this in production with the environment variable: LNP_DSN
+http_server_port: ":8080"
+grpc_server_port: ":50051"
+
+cassandra_host: "m360-cass-dev.lb.ytel.com:9042"
+cassandra_username: "dialer"
+cassandra_password: '\0b4s2ZRrVE?WZ_p'
+cassandra_keyspace: "lnp"
+cassandra_data_center: "datacenter1"
+cassandra_timeout: 5
+cassandra_proto_version: 4

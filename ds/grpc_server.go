@@ -13,15 +13,14 @@ type GrpcServer struct {
 	lis net.Listener
 }
 
-func NewGrpcServer(s *grpc.Server, lis net.Listener) *GrpcServer {
+func NewGrpcServer(s *grpc.Server) *GrpcServer {
 	return &GrpcServer{
 		s: s,
-		lis: lis,
 	}
 }
 
 
-func (grpc *GrpcServer) Start() {
+func (grpc *GrpcServer) GrpcRouter() *grpc.Server {
 	helloSrv := hpb.NewGrpcHelloService()
 	//ocnSrv := ocnpb.NewGrpcOcnService(ocnService)
 	//lrnSrv := lrnpb.NewGrpcLrnService(lrnService)
@@ -33,22 +32,6 @@ func (grpc *GrpcServer) Start() {
 
 	// Register reflection service on gRPC server.
 	reflection.Register(grpc.s)
-	if err := grpc.s.Serve(grpc.lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
 
-	// Wait for interrupt signal to gracefully shutdown the server with
-	// a timeout of 5 seconds.
-	//quit := make(chan os.Signal)
-	//signal.Notify(quit, os.Interrupt)
-	//<-quit
-	//log.Println("Shutdown Http Server ...")
-	//
-	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	//defer cancel()
-	//if err := grpc.lis.Close(); err != nil {
-	//	log.Fatal("Grpc Server Shutdown:", err)
-	//}
-
-	log.Println("Grpc Server exiting")
+	return grpc.s
 }

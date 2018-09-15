@@ -11,7 +11,7 @@ type Database struct {
 	*gocql.Session
 }
 
-func ConnectDatabase() *gocql.Session {
+func Connect() *gocql.Session {
 
 	// connect to the database
 	cluster := gocql.NewCluster(app.Config.CassHost)

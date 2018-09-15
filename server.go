@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"github.com/pkg/profile"
 )
 
 var (
@@ -21,12 +22,15 @@ var (
 
 
 func main() {
+	// CPU profiling by default
+	defer profile.Start().Stop()
+
 	// load application configurations
 	if err := app.LoadConfig("./config"); err != nil {
 		panic(fmt.Errorf("invalid application configuration: %s", err))
 	}
 
-	db := dbase.ConnectDatabase()
+	db := dbase.Connect()
 	defer db.Close()
 
 	// OCN
@@ -51,8 +55,12 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	grpcServer := ds.NewGrpcServer(s, lis)
-	go grpcServer.Start()
+	grpcServer := ds.NewGrpcServer(s)
+	grpcRouter := grpcServer.GrpcRouter()
+
+	g.Go(func() error {
+		return grpcRouter.Serve(lis)
+	})
 
 	// HTTP Server
 	r := gin.Default()
@@ -63,6 +71,13 @@ func main() {
 	lrnRouter.LrnRegister(v1.Group("/dids"))
 
 	httpServer := ds.NewHttpServer(r)
-	httpServer.Start()
+	httpRouter := httpServer.HttpRouter()
 
+	g.Go(func() error {
+		return httpRouter.ListenAndServe()
+	})
+
+	if err := g.Wait(); err != nil {
+		log.Fatal(err)
+	}
 }
