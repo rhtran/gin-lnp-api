@@ -9,12 +9,13 @@ import (
 	"gin-lnp-api/dbase"
 	"gin-lnp-api/app"
 	"gin-lnp-api/ds"
-				"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"github.com/pkg/profile"
-)
+	hpb "gin-lnp-api/grpc/grhello"
+	ocnpb "gin-lnp-api/grpc/grocn"
+	)
 
 var (
 	g errgroup.Group
@@ -23,7 +24,7 @@ var (
 
 func main() {
 	// CPU profiling by default
-	defer profile.Start().Stop()
+	//defer profile.Start().Stop()
 
 	// load application configurations
 	if err := app.LoadConfig("./config"); err != nil {
@@ -56,6 +57,13 @@ func main() {
 	s := grpc.NewServer()
 
 	grpcServer := ds.NewGrpcServer(s)
+
+	helloSrv := hpb.NewGrpcHelloService()
+	hpb.RegisterHelloServiceServer(s, helloSrv)
+
+	ocnSrv := ocnpb.NewGrpcOcnService(ocnService)
+	ocnpb.RegisterOcnServiceServer(s, ocnSrv)
+
 	grpcRouter := grpcServer.GrpcRouter()
 
 	g.Go(func() error {

@@ -3,6 +3,7 @@ package grlrn
 import (
 	"golang.org/x/net/context"
 	"gin-lnp-api/api/lrn"
+	"time"
 )
 
 type GrpcLrnService struct {
@@ -31,13 +32,13 @@ func (s *GrpcLrnService) FindByDid(ctx context.Context, didReq *DidReq) (*LrnRes
 		Dst: *lrn.Dst,
 		City: *lrn.Rc,
 		St: *lrn.State,
-		//Zips: *lrn.Zips,
+		Zips: lrn.Zips,
 		Ct: *lrn.Country,
 		Tz: *lrn.Tz,
 		Lat: *lrn.Latitude,
 		Long: *lrn.Longitude,
 		Lnp: int64(lrn.Lnp),
-		//Lu: lrn.LastUpdated,
+		Lu: lrn.LastUpdated.Format(time.RFC3339),
 	}, nil
 }
 
