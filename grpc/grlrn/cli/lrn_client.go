@@ -2,9 +2,9 @@ package main
 
 import (
 	"google.golang.org/grpc"
-	"time"
 	"log"
-	pb "gin-lnp-api/grpc/grocn"
+	pb "gin-lnp-api/grpc/grlrn"
+	"time"
 	"context"
 )
 
@@ -15,18 +15,19 @@ func main() {
 		log.Fatalf("Did not connect: %v", err)
 	}
 	defer conn.Close()
-	client := pb.NewOcnServiceClient(conn)
+	client := pb.NewLrnServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	response, err := client.FindByOcn(ctx,
-		&pb.OcnReq{Ocn: "1583"})
+	response, err := client.FindByDid(ctx,
+		&pb.DidReq{Did: "7143174661"})
 
 	if err != nil {
-		log.Fatalf("could not get OCN: %v", err)
+		log.Fatalf("could not find: %v", err)
 	}
 
-	log.Printf("OCN: %s", response)
+	log.Printf("LRN: %s", response)
 }
+
 

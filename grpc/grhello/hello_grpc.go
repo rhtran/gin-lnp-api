@@ -1,5 +1,7 @@
 package grhello
 
+//go:generate mockgen -destination=grhello/mock_hello -source=grhello/hello_grpc.go -package=grhello
+
 import (
 	"golang.org/x/net/context"
 	)

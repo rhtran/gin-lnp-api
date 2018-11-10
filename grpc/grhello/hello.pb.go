@@ -3,6 +3,9 @@
 
 package grhello
 
+//go:generate mockgen -destination=grhello/mock_hello -source=grhello/hello.pb.go -package=grhello
+
+
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"

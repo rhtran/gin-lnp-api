@@ -15,6 +15,7 @@ import (
 	"net"
 	hpb "gin-lnp-api/grpc/grhello"
 	ocnpb "gin-lnp-api/grpc/grocn"
+	lrnpb "gin-lnp-api/grpc/grlrn"
 	)
 
 var (
@@ -50,7 +51,7 @@ func main() {
 	lrnRouter := lrn.NewLrnRouter(lrnService)
 
 	// GRPC Server
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", app.Config.GrpcServerPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -58,11 +59,15 @@ func main() {
 
 	grpcServer := ds.NewGrpcServer(s)
 
+	// register the services
 	helloSrv := hpb.NewGrpcHelloService()
 	hpb.RegisterHelloServiceServer(s, helloSrv)
 
 	ocnSrv := ocnpb.NewGrpcOcnService(ocnService)
 	ocnpb.RegisterOcnServiceServer(s, ocnSrv)
+
+	lrnSrv := lrnpb.NewGrpcLrnService(lrnService)
+	lrnpb.RegisterLrnServiceServer(s, lrnSrv)
 
 	grpcRouter := grpcServer.GrpcRouter()
 

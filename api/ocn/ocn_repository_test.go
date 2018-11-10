@@ -2,23 +2,30 @@ package ocn
 
 import (
 	"testing"
-	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+	"github.com/golang/mock/gomock"
 )
 
-func TestFindByOcn(t *testing.T) {
-	db, mock, err := sqlmock.New()
+func  TestFindByOcn(t *testing.T) {
+	mockCtrl := gomock.NewController(t)
+	defer mockCtrl.Finish()
 
-	if err != nil {
-		t.Fatalf("an error ‘%s’ was not expected when opening a stub database connection", err)
+	mockOcnRepository := NewMockocnRepository(mockCtrl)
+	testOcn := Ocn{Ocn: "9962", CommonName: "Winstar Communications", Company: "Winstar Communications LLC - CA",
+					Type: "CLEC", Neca:"N"}
+	mockOcnRepository.EXPECT().FindByOcn("9962").Return(&testOcn, nil).Times(1)
+	testGetByOcn(t, mockOcnRepository)
+}
+
+func testGetByOcn(t *testing.T, mockrepository ocnRepository) {
+	testOcn := Ocn{Ocn: "9962", CommonName: "Winstar Communications", Company: "Winstar Communications LLC - CA",
+		Type: "CLEC", Neca:"N"}
+
+	ocnService := NewOcnService(mockrepository)
+
+	r, err := ocnService.GetByOcn("9962")
+
+	if err != nil || *r != testOcn {
+		t.Errorf("findByOcn failed")
 	}
-
-	defer db.Close()
-
-	rows := sqlmock.NewRows([]string {
-		"ocn", "neca", "type", "common_name", "company"}).
-		AddRow("874E", "N", "L_RESELLER", "Points South", "Points South")
-	query := "SELECT ocn, neca, type, common_name, company FROM ocn WHERE ocn = \\?"
-
-	mock.ExpectQuery(query).WillReturnRows(rows)
-	a := NewOcnRepository(db)
+	t.Log("Reply : ", r)
 }

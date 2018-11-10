@@ -1,5 +1,7 @@
 package ocn
 
+//go:generate mockgen -destination=ocn/mock_ocn_repository -source=ocn/ocn_repository -package=ocn
+
 import (
 	"github.com/gocql/gocql"
 	"fmt"

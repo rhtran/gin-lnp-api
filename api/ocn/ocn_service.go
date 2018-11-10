@@ -1,5 +1,7 @@
 package ocn
 
+//go:generate mockgen -destination=ocn/mock_ocn_service -source=ocn/ocn_service -package=ocn
+
 type ocnService interface {
 	GetByOcn(ocn string) (*Ocn, error)
 }

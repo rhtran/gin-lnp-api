@@ -2,15 +2,12 @@ package ds
 
 import (
 	"google.golang.org/grpc/reflection"
-	"net"
-	"log"
-	hpb "gin-lnp-api/grpc/grhello"
-	"google.golang.org/grpc"
+		"log"
+		"google.golang.org/grpc"
 				)
 
 type GrpcServer struct {
 	s *grpc.Server
-	lis net.Listener
 }
 
 func NewGrpcServer(s *grpc.Server) *GrpcServer {
@@ -21,12 +18,11 @@ func NewGrpcServer(s *grpc.Server) *GrpcServer {
 
 
 func (grpc *GrpcServer) GrpcRouter() *grpc.Server {
-	helloSrv := hpb.NewGrpcHelloService()
-	//ocnSrv := ocnpb.NewGrpcOcnService(ocnService)
+	//helloSrv := hpb.NewGrpcHelloService()
+
 	//lrnSrv := lrnpb.NewGrpcLrnService(lrnService)
 
-	hpb.RegisterHelloServiceServer(grpc.s, helloSrv)
-	//ocnpb.RegisterOcnServiceServer(s, ocnSrv)
+	//hpb.RegisterHelloServiceServer(grpc.s, helloSrv)
 	//lrnpb.RegisterLrnServiceServer(s, lrnSrv)
 	log.Println("Start Grpc Server ...")
 
